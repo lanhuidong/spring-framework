@@ -65,6 +65,7 @@ public class StandardEnvironment extends AbstractEnvironment {
 	 * Create a new {@code StandardEnvironment} instance with a default
 	 * {@link MutablePropertySources} instance.
 	 */
+	//创建成功后会添加环境变量和系统属性
 	public StandardEnvironment() {
 	}
 

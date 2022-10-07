@@ -332,6 +332,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 */
 	@Override
 	public ConfigurableEnvironment getEnvironment() {
+		// this.environment在创建AnnotatedBeanDefinitionReader的实例时就会被创建
 		if (this.environment == null) {
 			this.environment = createEnvironment();
 		}
