@@ -311,7 +311,9 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 					List<Constructor<?>> candidates = new ArrayList<>(rawCandidates.length);
 					Constructor<?> requiredConstructor = null;
 					Constructor<?> defaultConstructor = null;
+					// 如果不是kotlin，则这里返回null
 					Constructor<?> primaryConstructor = BeanUtils.findPrimaryConstructor(beanClass);
+					// 非编译器合成的构造器数量
 					int nonSyntheticConstructors = 0;
 					for (Constructor<?> candidate : rawCandidates) {
 						if (!candidate.isSynthetic()) {
@@ -320,13 +322,16 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 						else if (primaryConstructor != null) {
 							continue;
 						}
+						//找@Autowired, @Inject注解的构造器
 						MergedAnnotation<?> ann = findAutowiredAnnotation(candidate);
 						if (ann == null) {
+							// 如果是CGLib的代理类，则返回被代理的类
 							Class<?> userClass = ClassUtils.getUserClass(beanClass);
 							if (userClass != beanClass) {
 								try {
 									Constructor<?> superCtor =
 											userClass.getDeclaredConstructor(candidate.getParameterTypes());
+									// 同上
 									ann = findAutowiredAnnotation(superCtor);
 								}
 								catch (NoSuchMethodException ex) {

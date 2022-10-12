@@ -249,6 +249,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			String name, @Nullable Class<T> requiredType, @Nullable Object[] args, boolean typeCheckOnly)
 			throws BeansException {
 
+		/**
+		 * 去掉FactoryBean名称的"&"前缀，或者将别名转换为规范名称
+		 */
 		String beanName = transformedBeanName(name);
 		Object beanInstance;
 
@@ -342,6 +345,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 							throw ex;
 						}
 					});
+					// 这里是为了处理FactoryBean
 					beanInstance = getObjectForBeanInstance(sharedInstance, name, beanName, mbd);
 				}
 

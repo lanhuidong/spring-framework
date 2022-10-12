@@ -39,6 +39,7 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.support.ResourceEditorRegistrar;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -581,6 +582,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				 * 1.首先将实现PriorityOrdered的BeanFactoryPostProcessor排序并依次调用
 				 * 2.其次将实现Ordered的BeanFactoryPostProcessor排序并依次调用
 				 * 3.依次调用剩下的BeanFactoryPostProcessor
+				 *
+				 * 当使用Java Config时，在AnnotationConfigApplicationContext构造方法中会调用AnnotatedBeanDefinitionReader构造方法，
+				 * 在该方法中，通过调用AnnotationConfigUtils.registerAnnotationConfigProcessors(BeanDefinitionRegistry)方法注册了
+				 * ConfigurationClassPostProcessor等几个BeanFactoryPostProcessor，在此次通过调用ConfigurationClassPostProcessor的方法来
+				 * 解析配置并封装成BeanDefinition, 例如@Configuration配置类中@Bean注解的方法
 				 */
 				invokeBeanFactoryPostProcessors(beanFactory);
 
