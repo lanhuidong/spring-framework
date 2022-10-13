@@ -88,6 +88,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 * {@link Configuration @Configuration} classes
 	 */
 	public AnnotationConfigApplicationContext(Class<?>... componentClasses) {
+		// 注意构造方法以及父类中构造方法中初始化的内容
 		this();
 		//注册配置类，这里的componentClasses一般是@Configuration注解的类
 		register(componentClasses);
