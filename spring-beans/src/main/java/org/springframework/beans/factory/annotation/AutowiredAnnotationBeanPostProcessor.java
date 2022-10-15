@@ -313,8 +313,9 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 					Constructor<?> defaultConstructor = null;
 					// 如果不是kotlin，则这里返回null
 					Constructor<?> primaryConstructor = BeanUtils.findPrimaryConstructor(beanClass);
-					// 非编译器合成的构造器数量
+					// 非编译器合成的构造器数量, 普通Java类应该很少有合成构造器，目前暂时不知道如何让编译器生成合成构造器
 					int nonSyntheticConstructors = 0;
+					//下面的for循环用于查找@Autowired, @Inject等注解的构造器或者默认构造器
 					for (Constructor<?> candidate : rawCandidates) {
 						if (!candidate.isSynthetic()) {
 							nonSyntheticConstructors++;
@@ -346,6 +347,7 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 										". Found constructor with 'required' Autowired annotation already: " +
 										requiredConstructor);
 							}
+							// 检查构造器的注解的required属性是否为true，例如：@Autowired(required = false)，则这里返回false
 							boolean required = determineRequiredStatus(ann);
 							if (required) {
 								if (!candidates.isEmpty()) {
