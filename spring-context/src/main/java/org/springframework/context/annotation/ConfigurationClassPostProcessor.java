@@ -244,6 +244,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		}
 		this.registriesPostProcessed.add(registryId);
 
+		// 解析其他的bean定义
 		processConfigBeanDefinitions(registry);
 	}
 
@@ -279,12 +280,14 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 
 		for (String beanName : candidateNames) {
 			BeanDefinition beanDef = registry.getBeanDefinition(beanName);
+			//如果CONFIGURATION_CLASS_ATTRIBUTE属性已被设置，说明这个@Configuration注解的类生成的BeanDefinition已处被理过了
 			if (beanDef.getAttribute(ConfigurationClassUtils.CONFIGURATION_CLASS_ATTRIBUTE) != null) {
 				if (logger.isDebugEnabled()) {
 					logger.debug("Bean definition has already been processed as a configuration class: " + beanDef);
 				}
 			}
 			else if (ConfigurationClassUtils.checkConfigurationClassCandidate(beanDef, this.metadataReaderFactory)) {
+				//@Configuration, @Import, @ImportResource, @Component, @ComponentScan， 第一个为full，后面的为lite
 				configCandidates.add(new BeanDefinitionHolder(beanDef, beanName));
 			}
 		}
