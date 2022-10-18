@@ -13,6 +13,9 @@ public class Car {
 
 	private String name;
 
+	@Autowired
+	private Person owner;
+
 	public Car() {
 		this.name = "default";
 	}
