@@ -616,6 +616,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// Initialize the bean instance.
 		Object exposedObject = bean;
 		try {
+			// 如果有循环依赖，比如A.b, B.a, 假设这里是实例化A，那么在populateBean中会先把A放到DefaultSingletonBeanRegistry.singletonFactories中，然后实例化B
 			populateBean(beanName, mbd, instanceWrapper);
 			exposedObject = initializeBean(beanName, exposedObject, mbd);
 		}
